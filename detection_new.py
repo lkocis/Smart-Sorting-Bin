@@ -8,12 +8,13 @@ import threading
 from flask import Flask
 from flask import request as freq
 
-CAM_URL    = "http://192.168.1.162/capture"
+CAM_URL = "http://192.168.1.162/capture"
+ESP32_URL = "http://192.168.1.161"
 FOLDER_PATH = "C:/Users/LKocis/Downloads/ESP 32 CAM detection/ESP32-CAM-detection/pictures"
 
-event       = threading.Event()
+event = threading.Event()
 latest_frame = None
-frame_lock  = threading.Lock()
+frame_lock = threading.Lock()
 
 app = Flask(__name__)
 
@@ -116,13 +117,16 @@ def detection_worker():
 
             if detect_red_color(img):
                 print("--- Detekcija: Crvena boja!")
+                requests.post(f"{ESP32_URL}/servo", json={"result": "red"}, timeout=2)
             elif detect_round(img):
                 print("--- Detekcija: Okrugli objekt!")
+                requests.post(f"{ESP32_URL}/servo", json={"result": "round"}, timeout=2)
             else:
                 print("--- Detekcija: Ništa nije pronađeno.")
+                requests.post(f"{ESP32_URL}/servo", json={"result": "none"}, timeout=2)
 
             start_time = time.time()
-            while time.time() - start_time < 3:
+            while time.time() - start_time < 4:
                 cv2.imshow("Detection Result", img)
                 if cv2.waitKey(1) & 0xFF == 27:
                     break
