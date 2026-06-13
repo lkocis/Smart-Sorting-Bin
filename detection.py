@@ -8,7 +8,7 @@ import threading
 from flask import Flask
 from flask import request as freq
 
-CAM_URL    = "http://192.168.1.162/capture"
+CAM_URL = "http://10.9.0.238/capture"
 FOLDER_PATH = "C:/Users/LKocis/Downloads/ESP 32 CAM detection/ESP32-CAM-detection/pictures"
 
 event       = threading.Event()
