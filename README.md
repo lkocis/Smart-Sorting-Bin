@@ -1,1 +1,1 @@
-# ESP32-CAM-detection
+# Smart Sorting Bin
